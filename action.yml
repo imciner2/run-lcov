@@ -37,12 +37,15 @@ runs:
     # Exclude requested files
     - shell: bash
       run: |
-            if [ -n ${{ inputs.exclude }} ]
+            if [ -n "${{ inputs.exclude }}" ]
             then
               EXCLUDE_FILES=( "${{ inputs.exclude }}" )
 
+              echo $EXCLUDE_FILES[@]
+
               for f in "${EXCLUDE_FILES[@]}"
               do
+                echo $f
                 lcov --remove ${{ inputs.output_file }} "$f" -o ${{ inputs.output_file }}
               done
             fi
