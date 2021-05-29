@@ -39,7 +39,6 @@ runs:
       run: |
             if [ -n "${{ inputs.exclude }}" ]
             then
-              echo ${{ inputs.exclude }}
               lcov --remove ${{ inputs.output_file }} ${{ inputs.exclude }} -o ${{ inputs.output_file }}
             fi
 
