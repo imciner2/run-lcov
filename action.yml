@@ -1,0 +1,56 @@
+# GitHub composite action to process coverage data using lcov
+name: 'lcov coverage processing'
+
+description: 'Process coverage data using lcov'
+
+inputs:
+  input_directory:
+    description: 'Directory to search for coverage info files'
+    required: true
+
+  exclude:
+    description: 'Files/directories to exclude from the coverage'
+    required: false
+    default: ''
+
+  output_file:
+    description: 'Output file for coverage results'
+    required: true
+    default: 'coverage.info'
+
+  display_coverage:
+    description: 'Display coverage information in the action log'
+    required: false
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+    # Install lcov
+    - shell: bash
+      run: sudo apt-get install lcov
+
+    # Parse the coverage in the directory
+    - shell: bash
+      run: lcov --directory ${{ inputs.input_directory }} --capture -o ${{ inputs.output_file }}
+
+    # Exclude requested files
+    - shell: bash
+      run: |
+            if [ -n ${{ inputs.exclude }} ]
+            then
+              EXCLUDE_FILES=( "${{ inputs.exclude }}" )
+
+              for f in "${EXCLUDE_FILES[@]}"
+              do
+                lcov --remove ${{ inputs.output_file }} "$f" -o ${{ inputs.output_file }}
+              done
+            fi
+
+    # Display the coverage if requested
+    - shell: bash
+      run: |
+            if [ ${{ inputs.display_coverage }} ]
+            then
+              lcov --list ${{ inputs.output_file }}
+            fi
