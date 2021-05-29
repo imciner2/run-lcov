@@ -39,15 +39,8 @@ runs:
       run: |
             if [ -n "${{ inputs.exclude }}" ]
             then
-              EXCLUDE_FILES=( "${{ inputs.exclude }}" )
-
-              echo $EXCLUDE_FILES[@]
-
-              for f in "${EXCLUDE_FILES[@]}"
-              do
-                echo $f
-                lcov --remove ${{ inputs.output_file }} "$f" -o ${{ inputs.output_file }}
-              done
+              echo ${{ inputs.exclude }}
+              lcov --remove ${{ inputs.output_file }} ${{ inputs.exclude }} -o ${{ inputs.output_file }}
             fi
 
     # Display the coverage if requested
