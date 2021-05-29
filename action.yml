@@ -28,7 +28,7 @@ runs:
   steps:
     # Install lcov
     - shell: bash
-      run: sudo apt-get install lcov
+      run: echo "Installing lcov"; sudo apt-get install lcov > /dev/null
 
     # Parse the coverage in the directory
     - shell: bash
