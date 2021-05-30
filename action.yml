@@ -1,7 +1,11 @@
 # GitHub composite action to process coverage data using lcov
-name: 'lcov coverage processing'
+name: 'Run lcov'
 
 description: 'Process coverage data using lcov'
+
+branding:
+    color: 'blue'
+    icon: 'bar-chart-2'
 
 inputs:
   input_directory:
